@@ -9,7 +9,7 @@ from utils import append_tab
 def found_x(before, after):
     maxi = 0
     tab = []
-    reg = "(((-|\+)? {0,}\d+(.\d+)?) ?\* {0,}x\^(\d+))"
+    reg = "(((-|\+)? {0,}\d+(.\d+)?) ?\*? {0,}x\^(\d+))"
     bX = re.findall(reg, before)
     aX = re.findall(reg, after)
     for match_b in bX :
@@ -75,7 +75,7 @@ def reduce_form(before, after):
 
 def main():
     if (len(sys.argv)) != 2:
-        print("Bad argument")
+        print('''Bad argument.\nUsage : ./computor.py "[polynomial equation]"''')
     else :
         before, after = None, None
         expr = sys.argv[1]
