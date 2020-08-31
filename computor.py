@@ -73,6 +73,64 @@ def reduce_form(before, after):
         print("Wrong format")
         return(None, None, None, None)
 
+def aff_deg_minus(a, b, c, maxi):
+    if maxi == 0:
+        if c == 0:
+            print("All reals are solutions")
+        else :
+            print("The solution is :")
+            print(c)
+    elif (maxi == 1):
+        a, b = b, c
+        if a == 0 and b != 0:
+            print("No solution")
+        elif a == 0 and b == 0:
+            print("All reals are solutions")
+        else :
+            res = b / a
+            if res == 0:
+                res = 0
+            print("The solution is :")
+            print(res)
+
+def aff_delta_negative(a, b, c, delta):
+    print("Discriminant is strictly negative, the two solutions are :")
+    if b < 0 :
+        abs_b = abs(b)
+        print("({} + i√({})) / (2 * {})".format(abs_b, abs(delta), a), end = ' => ')
+        print("{}i + {}".format(sqrt(-delta) / (2 * a), b / (2 * a)))
+        print("({} - i√({})) / (2 * {})".format(abs_b, abs(delta), a), end = ' => ')
+        print("{}i + {}".format(-sqrt(-delta) / (2 * a), b / (2 * a)))
+    else :
+        print("(- {} + i√({})) / (2 * {})".format(b, abs(delta), a), end = ' => ')
+        print("{}i + {}".format(sqrt(-delta) / (2 * a), b / (2 * a)))
+        print("(- {} - i√({})) / (2 * {})".format(b, abs(delta), a), end = ' => ')
+        print("{}i + {}".format(-sqrt(-delta) / (2 * a), b / (2 * a)))
+
+def aff_delta_positive(a, b, c, delta):
+    print("Discriminant is strictly positive, the two solutions are :")
+    if b < 0 :
+        abs_b = abs(b)
+        print("({} - √({})) / (2 * {})".format(abs_b, delta, a), end = ' => ')
+        print((-b - sqrt(delta)) / (2 * a))
+        print("({} + √({})) / (2 * {})".format(abs_b, delta, a), end = ' => ')
+        print((-b + sqrt(delta)) / (2 * a))
+    else :
+        print("(- {} - √({})) / (2 * {})".format(b, delta, a), end = ' => ')
+        print((-b - sqrt(delta)) / (2 * a))
+        print("(- {} + √({})) / (2 * {})".format(b, delta, a), end = ' => ')
+        print((-b + sqrt(delta)) / (2 * a))
+
+def aff_deg_second(a, b, c, maxi):
+    delta = b*b - 4*a*c
+    if delta > 0:
+        aff_delta_positive(a, b, c, delta)
+    elif delta == 0 :
+        print("Discriminant is 0. The solution is :")
+        print((-b) / (2 * a))
+    elif delta < 0 :
+        aff_delta_negative(a, b, c, delta)
+
 def main():
     if (len(sys.argv)) != 2:
         print('''Bad argument.\nUsage : ./computor.py "[polynomial equation]"''')
@@ -89,42 +147,9 @@ def main():
             if c is not None:
                 print('Polynomial degree:', maxi)
                 if (maxi == 0 or maxi == 1) :
-                    if maxi == 0:
-                        if c == 0:
-                            print("All reals are solutions")
-                        else :
-                            print("The solution is :")
-                            print(c)
-                    elif (maxi == 1):
-                        a, b = b, c
-                        if a == 0 and b != 0:
-                            print("No solution")
-                        elif a == 0 and b == 0:
-                            print("All reals are solutions")
-                        else :
-                            res = b / a
-                            if res == 0:
-                                res = 0
-                            print("The solution is :")
-                            print(res)
+                    aff_deg_minus(a, b, c, maxi)
                 elif (maxi == 2):
-                    delta = b*b - 4*a*c
-                    if delta > 0:
-                        print("Discriminant is strictly positive, the two solutions are :")
-                        print((-b - sqrt(delta)) / (2 * a))
-                        print((-b + sqrt(delta)) / (2 * a))
-                    elif delta == 0 :
-                        print("Discriminant is 0. The solution is :")
-                        print((-b) / (2 * a))
-                    elif delta < 0 :
-                        print("Discriminant is strictly negative, the two solutions are :")
-                        if b < 0 :
-                            b = abs(b)
-                            print("({} + i√({})) / (2 * {})".format(b, delta, a))
-                            print("({} - i√({})) / (2 * {})".format(b, delta, a))
-                        else :
-                            print("(- {} + √({})) / (2 * {})".format(b, delta, a))
-                            print("(- {} - √({})) / (2 * {})".format(b, delta, a))
+                    aff_deg_second(a, b, c, maxi)
                 else :
                     print("The polynomial degree is stricly greater than 2, I can't solve.")
         else :
