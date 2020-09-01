@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 import sys
 import re
-from utils import sqrt
-from utils import abs
-from utils import sign
-from utils import append_tab
+from utils import *
+from natural_language import natural_language
+from simply_form import irreductible
+from simply_form import get_fraction
+from simply_form import get_complex
 
 def found_x(before, after):
     maxi = 0
@@ -46,10 +47,9 @@ def found_x(before, after):
                 maxi = int(match[4])
     return(tab, maxi, before.strip(), after.strip())
 
-
-def reduce_form(before, after):
-    tab, maxi, before, after = found_x(before, after)
-    str = ''
+def create_reduce_form(tab):
+    str_red = ''
+    str_nat = ''
     first = True
     X = 0
     for i in tab :
@@ -58,28 +58,52 @@ def reduce_form(before, after):
             if first == True and signX == '+':
                 signX = ''
             first = False
-            str += '{} {} * X^{} '.format(signX, abs(i), X)
+            str_red += '{} {} * X^{} '.format(signX, abs(i), X)
+            if X == 0 :
+                str_nat += '{} {} '.format(signX, abs(i))
+            elif X == 1:
+                str_nat += '{} {}X '.format(signX, abs(i))
+            else :
+                str_nat += '{} {}X^{} '.format(signX, abs(i), X)
         X += 1
-    if str != '' :
-        str += '= 0'
+    if str_red != '' :
+        str_red += '= 0'
     else :
-        str += "0 = 0"
+        str_red += "0 = 0"
+    if str_nat != '' :
+        str_nat += '= 0'
+    else :
+        str_nat += "0 = 0"
+    return(str_red.strip(), str_nat.strip())
+
+def reduce_form(before, after):
+    tab, maxi, before, after = found_x(before, after)
     if before == '' and after == '' or before == '0' and after == '' or before == '' and after == '0' or before == '0' and after == '0':
-        print("Reduced form :", str.strip())
+        red, nat = create_reduce_form(tab)
+        print("Reduced form :", red)
+        print("Natural form :", nat)
         if len(tab) < 3 :
             tab = append_tab(tab, 3)
         return(tab[0], tab[1], tab[2], maxi)
     else :
-        print("Wrong format")
-        return(None, None, None, None)
+        tab, before, after, maxi = natural_language(tab, before.strip(), after.strip(), maxi)
+        if before == '' and after == '' or before == '0' and after == '' or before == '' and after == '0' or before == '0' and after == '0':
+            red, nat = create_reduce_form(tab)
+            print("Reduced form :", red)
+            print("Natural form :", nat)
+            if len(tab) < 3 :
+                tab = append_tab(tab, 3)
+            return(tab[0], tab[1], tab[2], maxi)
+        else :
+            print("Wrong format")
+            return(None, None, None, None)
 
 def aff_deg_minus(a, b, c, maxi):
     if maxi == 0:
         if c == 0:
             print("All reals are solutions")
         else :
-            print("The solution is :")
-            print(c)
+            print("Impossible solution")
     elif (maxi == 1):
         a, b = b, c
         if a == 0 and b != 0:
@@ -87,39 +111,44 @@ def aff_deg_minus(a, b, c, maxi):
         elif a == 0 and b == 0:
             print("All reals are solutions")
         else :
+            print("The solution is :")
             res = b / a
             if res == 0:
                 res = 0
-            print("The solution is :")
+            fract = irreductible(b, a)
+            if fract != None :
+                print(fract, end=" => ")
             print(res)
 
 def aff_delta_negative(a, b, c, delta):
     print("Discriminant is strictly negative, the two solutions are :")
-    if b < 0 :
-        abs_b = abs(b)
-        print("({} + i√({})) / (2 * {})".format(abs_b, abs(delta), a), end = ' => ')
-        print("{}i + {}".format(sqrt(-delta) / (2 * a), b / (2 * a)))
-        print("({} - i√({})) / (2 * {})".format(abs_b, abs(delta), a), end = ' => ')
-        print("{}i + {}".format(-sqrt(-delta) / (2 * a), b / (2 * a)))
-    else :
-        print("(- {} + i√({})) / (2 * {})".format(b, abs(delta), a), end = ' => ')
-        print("{}i + {}".format(sqrt(-delta) / (2 * a), b / (2 * a)))
-        print("(- {} - i√({})) / (2 * {})".format(b, abs(delta), a), end = ' => ')
-        print("{}i + {}".format(-sqrt(-delta) / (2 * a), b / (2 * a)))
+    abs_b = abs(b)
+    str_sign = ('{} {}'.format(sign_without_plus(-b), abs_b)).strip()
+    str_plus, str_min = get_complex(delta, b, a)
+    print("({} + i√({})) / (2 * {})".format(str_sign, abs(delta), a), end = ' => ')
+    if (str_plus):
+        print(str_plus, end = ' => ')
+    print("{}i + {}".format(sqrt(-delta) / (2 * a), b / (2 * a)))
+    print("({} - i√({})) / (2 * {})".format(abs_b, abs(delta), a), end = ' => ')
+    if (str_min):
+        print(str_min, end = ' => ')
+    print("{}i + {}".format(-sqrt(-delta) / (2 * a), b / (2 * a)))
+
 
 def aff_delta_positive(a, b, c, delta):
     print("Discriminant is strictly positive, the two solutions are :")
-    if b < 0 :
-        abs_b = abs(b)
-        print("({} - √({})) / (2 * {})".format(abs_b, delta, a), end = ' => ')
-        print((-b - sqrt(delta)) / (2 * a))
-        print("({} + √({})) / (2 * {})".format(abs_b, delta, a), end = ' => ')
-        print((-b + sqrt(delta)) / (2 * a))
-    else :
-        print("(- {} - √({})) / (2 * {})".format(b, delta, a), end = ' => ')
-        print((-b - sqrt(delta)) / (2 * a))
-        print("(- {} + √({})) / (2 * {})".format(b, delta, a), end = ' => ')
-        print((-b + sqrt(delta)) / (2 * a))
+    abs_b = abs(b)
+    str_sign = ('{} {}'.format(sign_without_plus(-b), abs_b)).strip()
+    print("({} - √({})) / (2 * {})".format(str_sign, delta, a), end = ' => ')
+    str_fract = get_fraction(b, a, delta, '-')
+    if str_fract != None :
+        print(str_fract, end = ' => ')
+    print((-b - sqrt(delta)) / (2 * a))
+    print("({} + √({})) / (2 * {})".format(str_sign, delta, a), end = ' => ')
+    str_fract = get_fraction(b, a, delta, '+')
+    if str_fract != None :
+        print(str_fract, end = ' => ')
+    print((-b + sqrt(delta)) / (2 * a))
 
 def aff_deg_second(a, b, c, maxi):
     delta = b*b - 4*a*c
@@ -138,22 +167,28 @@ def main():
         before, after = None, None
         expr = sys.argv[1]
         m = re.search("(.*) ?= ?(.*)", expr)
+        # try :
         if m :
             if m.group(1):
                 before = m.group(1).lower().strip()
             if m.group(2):
                 after = m.group(2).lower().strip()
-            c, b, a, maxi = reduce_form(before, after)
-            if c is not None:
-                print('Polynomial degree:', maxi)
-                if (maxi == 0 or maxi == 1) :
-                    aff_deg_minus(a, b, c, maxi)
-                elif (maxi == 2):
-                    aff_deg_second(a, b, c, maxi)
-                else :
-                    print("The polynomial degree is stricly greater than 2, I can't solve.")
+            if before is None or after is None :
+                print("Equation not found")
+            else :
+                c, b, a, maxi = reduce_form(before, after)
+                if c is not None:
+                    print('Polynomial degree:', maxi, end="\n\n")
+                    if (maxi == 0 or maxi == 1) :
+                        aff_deg_minus(a, b, c, maxi)
+                    elif (maxi == 2):
+                        aff_deg_second(a, b, c, maxi)
+                    else :
+                        print("The polynomial degree is stricly greater than 2, I can't solve.")
         else :
             print("Wrong format")
+        # except :
+        #     print("Wrong format")
 
 if __name__ == '__main__':
     main()
