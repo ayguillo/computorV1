@@ -8,16 +8,13 @@ def epur_only_x(epur, maxi, tab, sign='+'):
         for is_x in search_x:
             if is_x[4] != ' ' and is_x[4] != '+' and is_x[4] != '-' and is_x[4] != '' and is_x[4] != '=':
                 continue
+            ad = float(re.sub(r"\s+", "", is_x[1], flags=re.UNICODE))
+            if sign == '-':
+                ad = -ad
             try :
-                ad = float(re.sub(r"\s+", "", is_x[1], flags=re.UNICODE))
-                if sign == '-':
-                    ad = -ad
                 old = tab[1]
                 tab[1] = (old + ad)
             except :
-                ad = float(re.sub(r"\s+", "", is_x[1], flags=re.UNICODE))
-                if sign == '-':
-                    ad = -ad
                 tab = append_tab(tab, 1)
                 tab[1] = ad
             if maxi < 1:
@@ -32,7 +29,10 @@ def epur_only_pow(epur, maxi, tab, sign='+'):
         for is_x in search_x :
             if is_x[4] != ' ' and is_x[4] != '+' and is_x[4] != '-' and is_x[4] != '' and is_x[4] != '=':
                 continue
-            sign_x = is_x[1]
+            if is_x[1] == '-':
+                sign_x = '-'
+            else :
+                sign_x = '+'
             if is_x[3] == '':
                 pow = 0
             else :
@@ -44,14 +44,12 @@ def epur_only_pow(epur, maxi, tab, sign='+'):
                 ad = -1.0
             else :
                 ad = 1.0
+            if sign == '-':
+                ad = -ad
             try :
-                if sign == '-':
-                    ad = -ad
                 old = tab[pow]
                 tab[pow] = (old + ad)
             except :
-                if sign == '-':
-                    ad = -ad
                 tab = append_tab(tab, pow)
                 tab[pow] = ad
             if maxi < pow:
@@ -64,16 +62,13 @@ def epur_only_int(epur, tab, sign='+'):
         reg = "((-|\+)? {0,}\d+(\.\d+)?)"
         search_int = re.findall(reg, epur)
         for is_int in search_int:
+            ad = float(re.sub(r"\s+", "", is_int[0], flags=re.UNICODE))
+            if sign == '-':
+                ad = -ad
             try :
-                ad = float(re.sub(r"\s+", "", is_int[0], flags=re.UNICODE))
-                if sign == '-':
-                    ad = -ad
                 old = tab[0]
                 tab[0] = (old + ad)
             except :
-                ad = float(re.sub(r"\s+", "", is_int[0], flags=re.UNICODE))
-                if sign == '-':
-                    ad = -ad
                 tab = append_tab(tab, 0)
                 tab[0] = ad
             epur = (epur.replace(is_int[0], '')).strip()
