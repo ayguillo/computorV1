@@ -27,14 +27,19 @@ def epur_only_x(epur, maxi, tab, sign='+'):
 
 def epur_only_pow(epur, maxi, tab, sign='+'):
     if epur != '0' or epur != '':
-        reg = "((-|\+)? {0,}x(\^(\d+))?)"
+        reg = "((-|\+)? {0,}x(\^(\d+))?(.|))"
         search_x = re.findall(reg, epur)
         for is_x in search_x :
-            sign_x = is_x[1]
-            try :
-                pow = int(is_x[3])
-            except ValueError :
+            if is_x[4] != ' ' and is_x[4] != '+' and is_x[4] != '-' and is_x[4] != '' and is_x[4] != '=':
                 continue
+            sign_x = is_x[1]
+            if is_x[3] == '':
+                pow = 0
+            else :
+                try :
+                    pow = int(is_x[3])
+                except ValueError :
+                    continue
             if sign_x == '-':
                 ad = -1.0
             else :
