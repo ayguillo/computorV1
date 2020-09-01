@@ -167,7 +167,6 @@ def main():
         before, after = None, None
         expr = sys.argv[1]
         m = re.search("(.*) ?= ?(.*)", expr)
-        # try :
         if m :
             if m.group(1):
                 before = m.group(1).lower().strip()
@@ -187,8 +186,6 @@ def main():
                         print("The polynomial degree is stricly greater than 2, I can't solve.")
         else :
             print("Wrong format")
-        # except :
-        #     print("Wrong format")
 
 if __name__ == '__main__':
     main()
