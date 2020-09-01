@@ -5,14 +5,20 @@ def found_pgcd(num, denum):
         num = -num
     if denum < 0:
         denum = -denum
+    if num == 0:
+        return(None)
     while (denum % num):
         pgcd = denum % num
         denum = num
         num = pgcd
+        if num == 0:
+            return(None)
     return (num)
 
 def irreductible(num, denum):
     pgcd = found_pgcd(num, denum)
+    if pgcd == None :
+        return(None)
     num_p = num / pgcd
     denum_p = denum / pgcd
     if num_p.is_integer() and denum_p.is_integer():

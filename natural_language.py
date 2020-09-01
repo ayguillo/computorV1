@@ -3,9 +3,11 @@ from utils import append_tab
 
 def epur_only_x(epur, maxi, tab, sign='+'):
     if epur != '0' or epur != '':
-        reg = "(((-|\+)? {0,}\d+(\.\d+)?) ?\*? {0,}x)"
+        reg = "(((-|\+)? {0,}\d+(\.\d+)?) ?\*? {0,}x(.|))"
         search_x = re.findall(reg, epur)
         for is_x in search_x:
+            if is_x[4] != ' ' and is_x[4] != '+' and is_x[4] != '-' and is_x[4] != '' and is_x[4] != '=':
+                continue
             try :
                 ad = float(re.sub(r"\s+", "", is_x[1], flags=re.UNICODE))
                 if sign == '-':
