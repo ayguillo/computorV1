@@ -34,7 +34,7 @@ def epur_only_pow(epur, maxi, tab, sign='+'):
             else :
                 sign_x = '+'
             if is_x[3] == '':
-                pow = 0
+                pow = 1
             else :
                 try :
                     pow = int(is_x[3])

@@ -47,7 +47,7 @@ def get_complex(delta, b, a):
             complex_min = irreductible(min, denum)
         if plus.is_integer():
             complex_plus = irreductible(plus, denum)
-        if b.is_integer():
+        if float(b).is_integer():
             real = irreductible(b, denum)
         if complex_min == '':
             complex_min = None
