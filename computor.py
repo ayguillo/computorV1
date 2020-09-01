@@ -69,7 +69,7 @@ def create_reduce_form(tab):
     if str_red != '' :
         str_red += '= 0'
     else :
-        str_red += "0 = 0"
+        str_red += "0 * X^0 = 0 * X^0"
     if str_nat != '' :
         str_nat += '= 0'
     else :
@@ -101,7 +101,7 @@ def reduce_form(before, after):
 def aff_deg_minus(a, b, c, maxi):
     if maxi == 0:
         if c == 0:
-            print("All reals are solutions")
+            print("Any real is solution")
         else :
             print("Impossible solution")
     elif (maxi == 1):
@@ -109,15 +109,16 @@ def aff_deg_minus(a, b, c, maxi):
         if a == 0 and b != 0:
             print("No solution")
         elif a == 0 and b == 0:
-            print("All reals are solutions")
+            print("Any real is solution")
         else :
             print("The solution is :")
-            res = b / a
+            res = -(b / a)
             if res == 0:
                 res = 0
-            fract = irreductible(b, a)
-            if fract != None :
-                print(fract, end=" => ")
+            else :
+                fract = irreductible(-b, a)
+                if fract != None :
+                    print(fract, end=" => ")
             print(res)
 
 def aff_delta_negative(a, b, c, delta):
