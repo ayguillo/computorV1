@@ -122,34 +122,33 @@ def aff_deg_minus(a, b, c, maxi):
             print(res)
 
 def aff_delta_negative(a, b, c, delta):
-    print("Discriminant is strictly negative, the two solutions are :")
+    print("Discriminant is strictly negative, the two solutions are : ")
     abs_b = abs(b)
     str_sign = ('{} {}'.format(sign_without_plus(-b), abs_b)).strip()
     str_plus, str_min = get_complex(delta, b, a)
-    print("({} + i√({})) / (2 * {})".format(str_sign, abs(delta), a), end = ' => ')
+    print("({} + i√({})) / (2 * {})".format(str_sign, abs(delta), a+0), end = ' => ')
     if (str_plus):
         print(str_plus, end = ' => ')
-    print("{}i + {}".format(sqrt(-delta) / (2 * a), b / (2 * a)))
-    print("({} - i√({})) / (2 * {})".format(abs_b, abs(delta), a), end = ' => ')
+    print("{}i + {}".format((sqrt(-delta) / (2 * a))+0, (b / (2 * a)))+0)
+    print("({} - i√({})) / (2 * {})".format(abs_b, abs(delta), a+0), end = ' => ')
     if (str_min):
         print(str_min, end = ' => ')
-    print("{}i + {}".format(-sqrt(-delta) / (2 * a), b / (2 * a)))
-
+    print("{}i + {}".format((-sqrt(-delta) / (2 * a))+0, (b / (2 * a))+0))
 
 def aff_delta_positive(a, b, c, delta):
     print("Discriminant is strictly positive, the two solutions are :")
     abs_b = abs(b)
     str_sign = ('{} {}'.format(sign_without_plus(-b), abs_b)).strip()
-    print("({} - √({})) / (2 * {})".format(str_sign, delta, a), end = ' => ')
+    print("({} - √({})) / (2 * {})".format(str_sign, delta+0, a+0), end = ' => ')
     str_fract = get_fraction(b, a, delta, '-')
     if str_fract != None :
         print(str_fract, end = ' => ')
-    print((-b - sqrt(delta)) / (2 * a))
-    print("({} + √({})) / (2 * {})".format(str_sign, delta, a), end = ' => ')
+    print(((-b - sqrt(delta)) / (2 * a))+0)
+    print("({} + √({})) / (2 * {})".format(str_sign, delta+0, a+0), end = ' => ')
     str_fract = get_fraction(b, a, delta, '+')
     if str_fract != None :
         print(str_fract, end = ' => ')
-    print((-b + sqrt(delta)) / (2 * a))
+    print(((-b + sqrt(delta)) / (2 * a))+0)
 
 def aff_deg_second(a, b, c, maxi):
     delta = b*b - 4*a*c
@@ -157,7 +156,7 @@ def aff_deg_second(a, b, c, maxi):
         aff_delta_positive(a, b, c, delta)
     elif delta == 0 :
         print("Discriminant is 0. The solution is :")
-        print((-b) / (2 * a))
+        print(((-b) / (2 * a))+0)
     elif delta < 0 :
         aff_delta_negative(a, b, c, delta)
 

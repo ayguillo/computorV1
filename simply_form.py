@@ -27,7 +27,7 @@ def irreductible(num, denum):
         if denum_p != 1 and len(str(num_p)) <= 2 and len(str(denum_p)) <= 2:
             if denum_p < 0 and num_p > 0 or denum_p < 0 and num_p < 0:
                 num_p, denum_p = -num_p, - denum_p
-            return("{}/{}".format(int(num_p), int(denum_p)))
+            return("{}/{}".format(int(num_p+0), int(denum_p+0)))
     return(None)
 
 def get_fraction(b, a, delta, sign):

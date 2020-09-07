@@ -1,8 +1,8 @@
 def abs(nb):
     if nb < 0 :
-        return (nb * (-1))
+        return ((nb * (-1))+0)
     else :
-        return nb
+        return nb+0
 
 def sqrt(nb):
     x = 1
@@ -10,7 +10,7 @@ def sqrt(nb):
     while abs(y-x) > 0.00000001:
         x = y
         y = 0.5 * (x + nb / x)
-    return(y)
+    return(y+0)
 
 def sign(nb):
     if nb < 0:
