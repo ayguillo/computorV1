@@ -129,7 +129,7 @@ def aff_delta_negative(a, b, c, delta):
     print("({} + i√({})) / (2 * {})".format(str_sign, abs(delta), a+0), end = ' => ')
     if (str_plus):
         print(str_plus, end = ' => ')
-    print("{}i + {}".format((sqrt(-delta) / (2 * a))+0, (b / (2 * a)))+0)
+    print("{}i + {}".format((sqrt(-delta) / (2 * a))+0, (b / (2 * a))+0))
     print("({} - i√({})) / (2 * {})".format(abs_b, abs(delta), a+0), end = ' => ')
     if (str_min):
         print(str_min, end = ' => ')
